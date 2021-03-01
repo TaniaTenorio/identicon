@@ -12,7 +12,9 @@ defmodule Identicon do
   Hashes the provided input using the md5 algorithm and returns a list of 16 numbers
  """
  def has_input(input) do
-  :crypto.hash(:md5, input)
+  hex = :crypto.hash(:md5, input)
   |> :binary.bin_to_list
+
+  %Identicon.Image{hex: hex}
  end
 end
