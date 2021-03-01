@@ -6,6 +6,13 @@ defmodule Identicon do
  def main(input) do
   input
   |> has_input
+  |> pick_color
+ end
+
+ def pick_color(image) do
+  %Identicon.Image{hex: [r, g, b | _tail]} = image
+
+  [r, g, b]
  end
 
  @doc """
