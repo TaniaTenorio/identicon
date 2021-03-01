@@ -1,18 +1,18 @@
 defmodule Identicon do
   @moduledoc """
-  Documentation for `Identicon`.
+  Provides method for creating an identicon based on a string
   """
 
-  @doc """
-  Hello world.
+ def main(input) do
+  input
+  |> has_input
+ end
 
-  ## Examples
-
-      iex> Identicon.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+ @doc """
+  Hashes the provided input using the md5 algorithm and returns a list of 16 numbers
+ """
+ def has_input(input) do
+  :crypto.hash(:md5, input)
+  |> :binary.bin_to_list
+ end
 end
