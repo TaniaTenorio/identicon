@@ -8,8 +8,19 @@ defmodule Identicon do
   |> has_input
   |> pick_color
   |> build_grid
+  |> filter_odd_squares
  end
 
+ @doc """
+  Filters the odd values from the grid and updates the image structure
+ """
+ def filter_odd_squares(%Identicon.Image{grid: grid} = image) do
+  grid = Enum.filter grid, fn({code, _index}) ->
+    rem(code, 2) == 0
+  end
+
+  %Identicon.Image{image | grid: grid}
+ end
  @doc """
  Creates the whole grid, adding the index of every element in the list.
  Adds the grid element in the image structure
