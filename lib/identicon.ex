@@ -10,12 +10,23 @@ defmodule Identicon do
   |> build_grid
  end
 
+ @doc """
+ Creates the whole grid, adding the index of every element in the list.
+ Adds the grid element in the image structure
+ """
  def build_grid(%Identicon.Image{hex: hex} = image) do
-  hex
-  |> Enum.chunk(3)
+  grid = hex
+  |> Enum.chunk_every(3, 3, :discard)
   |> Enum.map(&mirror_row/1)
+  |> List.flatten
+  |> Enum.with_index
+
+  %Identicon.Image{image | grid: grid}
  end
 
+ @doc """
+ Creates a copy of the first and second elements of the provided array, in order to mirror the provided row
+ """
  def mirror_row(row) do
   # [145, 46, 200]
   [first, second | _tail] = row
@@ -24,14 +35,17 @@ defmodule Identicon do
   row ++ [second, first]
  end
 
+ @doc """
+  Sets the color (rgb) for the identicon, using the first three elements of the hex list.
+  Adds the color element in the image structure
+ """
  def pick_color(%Identicon.Image{hex: [r, g, b | _tail]} = image) do
-
-
   %Identicon.Image{image | color: {r, g, b}}
  end
 
  @doc """
-  Hashes the provided input using the md5 algorithm and returns a list of 16 numbers
+  Hashes the provided input using the md5 algorithm and returns a list of 16 numbers.
+  Adds the hex element in the image structure
  """
  def has_input(input) do
   hex = :crypto.hash(:md5, input)
