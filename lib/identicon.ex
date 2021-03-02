@@ -14,10 +14,16 @@ defmodule Identicon do
   |> save_image(input)
  end
 
+ @doc """
+  Save the image as a png file
+ """
  def save_image(image, input) do
   File.write("#{input}.png", image)
  end
 
+ @doc """
+  Create the 250px X 250px square and the colored image using egd library
+ """
  def draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
   image = :egd.create(250, 250)
   fill = :egd.color(color)
@@ -29,6 +35,9 @@ defmodule Identicon do
   :egd.render(image)
  end
 
+ @doc """
+  Get the top left and bottom right points for each square that will be colored
+ """
  def build_pixel_map(%Identicon.Image{grid: grid} = image) do
   pixel_map = Enum.map grid, fn({_code, index}) ->
     horizontal = rem(index, 5) *50
